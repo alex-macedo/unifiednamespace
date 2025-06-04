@@ -58,6 +58,10 @@ class UNSKafkaMapper:
         self.kafka_handler: KafkaHandler = KafkaHandler(
             KAFKAConfig.kafka_config_map)
 
+        # store ignored mqtt attributes for filtering when converting
+        # payloads to dictionaries
+        self.mqtt_ignored_attributes = MQTTConfig.ignored_attributes
+
         self.uns_client.run(
             host=MQTTConfig.host,
             port=MQTTConfig.port,
