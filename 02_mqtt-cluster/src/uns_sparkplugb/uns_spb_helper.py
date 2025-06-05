@@ -585,9 +585,7 @@ class SpBMessageGenerator:
         return metric.dataset_value
 
     def _add_row_to_dataset(self, dataset_value: Payload.DataSet, values: list[int | float | bool | str]):
-        """
-        Private Helper method to set the row in the the dataset
-        """
+        """Private helper method to set the row in the dataset."""
         ds_row = dataset_value.rows.add()
         types = dataset_value.types
         for cell_value, cell_type in zip(values, types, strict=True):
