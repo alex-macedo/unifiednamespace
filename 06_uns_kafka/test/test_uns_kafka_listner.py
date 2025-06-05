@@ -200,7 +200,7 @@ def get_kafka_consumer(kafka_producer_config: dict) -> Consumer:
 
 def check_kafka_topics(mqtt_client, kafka_listener, expected_kafka_msg):
     """
-    Checks the kafka topic for teh expected message
+    Checks the Kafka topic for the expected message.
     """
     try:
         while True:
