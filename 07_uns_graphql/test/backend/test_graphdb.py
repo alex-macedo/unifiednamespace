@@ -147,19 +147,23 @@ async def test_execute_query(
     """
     # Initialize the GraphDB
     graph_db = GraphDB()
-    try:
-        # Pass args and kwargs only if they are not None
+
+    # Pass args and kwargs only if they are not None
+    async def _execute():
         if args is None and kwargs is None:
-            result = await graph_db.execute_read_query(query)
-        elif args is None:
-            result = await graph_db.execute_read_query(query, **kwargs)
-        elif kwargs is None:
-            result = await graph_db.execute_read_query(query, *args)
-        else:
-            result = await graph_db.execute_read_query(query, *args, **kwargs)
-        assert result is not None
-    except Exception as ex:
-        if is_error:
-            assert True  # Error was expected
-        else:
+            return await graph_db.execute_read_query(query)
+        if args is None:
+            return await graph_db.execute_read_query(query, **kwargs)
+        if kwargs is None:
+            return await graph_db.execute_read_query(query, *args)
+        return await graph_db.execute_read_query(query, *args, **kwargs)
+
+    if is_error:
+        with pytest.raises(Exception):
+            await _execute()
+    else:
+        try:
+            result = await _execute()
+            assert result is not None
+        except Exception as ex:
             pytest.fail(f"Exception {ex} occurred while executing query: {query} ")
