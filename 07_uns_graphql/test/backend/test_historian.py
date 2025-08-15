@@ -186,3 +186,14 @@ async def test_get_historic_events_for_property_keys(
             to_datetime=to_timestamp,
         )
         assert len(result) == count_of_return
+
+
+@pytest.mark.asyncio()
+async def test_close_pool_without_creation_does_not_raise():
+    """Calling close_pool without creating the pool should not raise."""
+    saved_pool = HistorianDBPool._shared_pool
+    HistorianDBPool._shared_pool = None
+    try:
+        await HistorianDBPool.close_pool()
+    finally:
+        HistorianDBPool._shared_pool = saved_pool
